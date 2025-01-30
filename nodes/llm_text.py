@@ -1,7 +1,8 @@
 import requests
+from ..helpers.prompt_helpers import PromptSaverMixin
 
 
-class MaiLLMText:
+class MaiLLMText(PromptSaverMixin):
     def __init__(self):
         pass
 
@@ -78,6 +79,8 @@ class MaiLLMText:
 
             if not llm_text.strip():
                 raise ValueError("[ERROR] The LLM returned an empty response.")
+
+            self.save_content(llm_text, "MaiLLMText")
             return (llm_text,)
         except requests.exceptions.RequestException as e:
             raise RuntimeError(f"[REQUEST ERROR] {e}")

@@ -3,9 +3,10 @@ import io
 import torch
 from PIL import Image
 import numpy as np
+from ..helpers.prompt_helpers import PromptSaverMixin
 
 
-class MaiLLMVision:
+class MaiLLMVision(PromptSaverMixin):
     def __init__(self):
         pass
 
@@ -92,6 +93,8 @@ class MaiLLMVision:
 
             if not llm_text.strip():
                 raise ValueError("[ERROR] The LLM returned an empty response.")
+
+            self.save_content(llm_text, "MaiLLMVision")
             return (llm_text,)
 
         except requests.exceptions.RequestException as e:
