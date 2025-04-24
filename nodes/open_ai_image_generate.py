@@ -36,6 +36,8 @@ class MaiOpenAiImageGenerate(PromptSaverMixin):
                     ],
                     {"default": "auto"},
                 ),
+                "width": ("INT", {"default": 0, "min": 0}),
+                "height": ("INT", {"default": 0, "min": 0}),
                 "seed": ("INT", {"default": 42}),
             }
         }
@@ -44,6 +46,21 @@ class MaiOpenAiImageGenerate(PromptSaverMixin):
     FUNCTION = "generate_image"
     CATEGORY = "mAI"
 
+    def _get_size(self, size, width, height):
+        if size != "auto":
+            return size
+
+        if width <= 0 or height <= 0:
+            return "auto"
+
+        if width == height:
+            return "1024x1024"
+
+        if width > height:
+            return "1536x1024"
+
+        return "1024x1536"
+
     def generate_image(
         self,
         url,
@@ -51,6 +68,8 @@ class MaiOpenAiImageGenerate(PromptSaverMixin):
         prompt,
         quality,
         size,
+        width,
+        height,
         seed,
     ):
         if not url.strip():
@@ -61,7 +80,7 @@ class MaiOpenAiImageGenerate(PromptSaverMixin):
         payload = {
             "prompt": prompt,
             "quality": quality,
-            "size": size,
+            "size": self._get_size(size, width, height),
             "seed": seed,
         }
 
