@@ -20,10 +20,10 @@ class MaiGoogleImageGenerate(PromptSaverMixin):
                 "prompt": ("STRING", {"default": "", "multiline": True}),
                 "model": (
                     [
-                        "imagen-4.0-generate-preview-05-20",
-                        "imagen-4.0-ultra-generate-exp-05-20",
+                        "regular",
+                        "ultra",
                     ],
-                    {"default": "imagen-4.0-generate-preview-05-20"},
+                    {"default": "regular"},
                 ),
                 "aspect_ratio": (
                     [
