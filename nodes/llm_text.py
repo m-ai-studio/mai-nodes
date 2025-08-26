@@ -14,6 +14,7 @@ class MaiLLMText(PromptSaverMixin):
                 "api_key": ("STRING", {"default": "", "multiline": False}),
                 "system_prompt": ("STRING", {"default": "", "multiline": True}),
                 "user_prompt": ("STRING", {"default": "", "multiline": True}),
+                "model": ("STRING", {"default": "Deepseek-V3.1", "multiline": False}),
                 "temperature": (
                     "FLOAT",
                     {
@@ -52,6 +53,7 @@ class MaiLLMText(PromptSaverMixin):
         api_key,
         system_prompt,
         user_prompt,
+        model,
         temperature,
         top_p,
         max_tokens,
@@ -65,6 +67,7 @@ class MaiLLMText(PromptSaverMixin):
         payload = {
             "system_prompt": system_prompt,
             "user_prompt": user_prompt,
+            "model": model,
             "temperature": temperature,
             "top_p": top_p,
             "max_tokens": max_tokens,
