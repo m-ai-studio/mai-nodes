@@ -23,8 +23,10 @@ class MaiGoogleVeoImageToVideo(PromptSaverMixin):
                 "api_key": ("STRING", {"default": "", "multiline": False}),
                 "user_prompt": ("STRING", {"default": "", "multiline": True}),
                 "negative_prompt": ("STRING", {"default": "", "multiline": True}),
-                "resolution": ("STRING", {"default": "720p", "multiline": False}),
-                "enhance_prompt": ("BOOLEAN", {"default": False}),
+                "aspectRatio": (["16:9", "9:16"], {"default": "16:9"}),
+                "resizeMode": (["crop", "pad"], {"default": "crop"}),
+                "resolution": (["720p", "1080p"], {"default": "720p"}),
+                "durationSeconds": ([4, 6, 8], {"default": 4}),
                 "seed": ("INT", {"default": 42}),
             }
         }
@@ -41,8 +43,10 @@ class MaiGoogleVeoImageToVideo(PromptSaverMixin):
         api_key,
         user_prompt,
         negative_prompt,
+        aspectRatio,
+        resizeMode,
         resolution,
-        enhance_prompt,
+        durationSeconds,
         seed,
     ):
         if not url.strip():
@@ -63,8 +67,10 @@ class MaiGoogleVeoImageToVideo(PromptSaverMixin):
             "params": json.dumps(
                 {
                     "negative_prompt": negative_prompt,
+                    "aspectRatio": aspectRatio,
+                    "resizeMode": resizeMode,
                     "resolution": resolution,
-                    "enhance_prompt": enhance_prompt,
+                    "durationSeconds": durationSeconds,
                 }
             ),
         }
