@@ -1,10 +1,9 @@
 import requests
 import io
 import torch
-from PIL import Image
-import numpy as np
 import json
 from ..helpers.prompt_helpers import PromptSaverMixin
+from ..helpers.image_helpers import to_pil
 from comfy_api.input_impl.video_types import VideoFromFile
 
 # List of supported params: https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/veo-video-generation
@@ -53,7 +52,7 @@ class MaiGoogleVeoImageToVideo(PromptSaverMixin):
             raise ValueError("[ERROR] No URL provided.")
 
         # Convert the incoming ComfyUI tensor to a valid PIL image
-        pil_image = self._to_pil(image)
+        pil_image = to_pil(image)
 
         # Save as JPEG in memory
         image_bytes = io.BytesIO()
@@ -115,24 +114,3 @@ class MaiGoogleVeoImageToVideo(PromptSaverMixin):
 
         except requests.exceptions.RequestException as e:
             raise RuntimeError(f"[REQUEST ERROR] {e}")
-
-    def _to_pil(self, tensor):
-        if not isinstance(tensor, torch.Tensor):
-            raise TypeError(f"Expected torch.Tensor but got {type(tensor)}")
-
-        if tensor.dim() == 4:
-            tensor = tensor[0]
-
-        if tensor.shape[0] <= 4:
-            tensor = tensor.permute(1, 2, 0)
-
-        image_np = (tensor.cpu().numpy() * 255.0).clip(0, 255).astype(np.uint8)
-        modes = {1: "L", 3: "RGB", 4: "RGBA"}
-        channels = image_np.shape[2]
-
-        if channels not in modes:
-            raise ValueError(f"Unexpected channel count: {channels}")
-
-        return Image.fromarray(
-            image_np[..., 0] if channels == 1 else image_np, mode=modes[channels]
-        )

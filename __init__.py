@@ -6,6 +6,8 @@ from .nodes.open_ai_image_generate import MaiOpenAiImageGenerate
 from .nodes.google_image_generate import MaiGoogleImageGenerate
 from .nodes.open_ai_llm_text import MaiOpenAiLLMText
 from .nodes.google_veo_image_to_video import MaiGoogleVeoImageToVideo
+from .nodes.google_gemini_text import MaiGoogleGeminiText
+from .nodes.google_gemini_image import MaiGoogleGeminiImage
 
 NODE_CLASS_MAPPINGS = {
     "MaiLLMText": MaiLLMText,
@@ -16,6 +18,8 @@ NODE_CLASS_MAPPINGS = {
     "MaiOpenAiImageGenerate": MaiOpenAiImageGenerate,
     "MaiGoogleImageGenerate": MaiGoogleImageGenerate,
     "MaiGoogleVeoImageToVideo": MaiGoogleVeoImageToVideo,
+    "MaiGoogleGeminiText": MaiGoogleGeminiText,
+    "MaiGoogleGeminiImage": MaiGoogleGeminiImage,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -27,6 +31,8 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "MaiOpenAiImageGenerate": "mAI - OpenAI - Image Generate",
     "MaiGoogleImageGenerate": "mAI - Google - Image Generate",
     "MaiGoogleVeoImageToVideo": "mAI - Google - Veo Image to Video",
+    "MaiGoogleGeminiText": "mAI - Google - Gemini Text",
+    "MaiGoogleGeminiImage": "mAI - Google - Gemini Image",
 }
 
 __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]

@@ -57,13 +57,13 @@ class MaiGoogleImageGenerate(PromptSaverMixin):
         ratio = width / height
         if abs(ratio - 1.0) < 0.1:  # Close to 1:1
             return "1:1"
-        elif abs(ratio - 16/9) < 0.1:  # Close to 16:9
+        elif abs(ratio - 16 / 9) < 0.1:  # Close to 16:9
             return "16:9"
-        elif abs(ratio - 4/3) < 0.1:  # Close to 4:3
+        elif abs(ratio - 4 / 3) < 0.1:  # Close to 4:3
             return "4:3"
-        elif abs(ratio - 3/4) < 0.1:  # Close to 3:4
+        elif abs(ratio - 3 / 4) < 0.1:  # Close to 3:4
             return "3:4"
-        elif abs(ratio - 9/16) < 0.1:  # Close to 9:16
+        elif abs(ratio - 9 / 16) < 0.1:  # Close to 9:16
             return "9:16"
         else:
             # Default to 1:1 if no close match
@@ -97,14 +97,8 @@ class MaiGoogleImageGenerate(PromptSaverMixin):
         try:
             response = requests.post(url, headers=headers, json=payload, timeout=180)
             response.raise_for_status()
-            
-            # The response is now a direct image buffer
-            image_data = response.content
 
-            # Convert to PIL Image and ensure RGB
-            pil_image = Image.open(io.BytesIO(image_data)).convert("RGB")
-
-            # Convert to tensor in ComfyUI format (B, H, W, C)
+            pil_image = Image.open(io.BytesIO(response.content)).convert("RGB")
             image_tensor = torch.from_numpy(np.array(pil_image)).float() / 255.0
             image_tensor = image_tensor.unsqueeze(0)
 
