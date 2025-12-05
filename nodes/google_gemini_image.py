@@ -89,14 +89,31 @@ class MaiGoogleGeminiImage(PromptSaverMixin):
 
         user_parts = [{"text": user_prompt}]
         if image is not None:
-            pil_image = to_pil(image)
-            image_bytes = io.BytesIO()
-            pil_image.save(image_bytes, format="JPEG")
-            image_bytes.seek(0)
-            image_base64 = base64.b64encode(image_bytes.getvalue()).decode("utf-8")
-            user_parts.append(
-                {"inlineData": {"mimeType": "image/jpeg", "data": image_base64}}
-            )
+            if image.dim() == 4:
+                # Batch of images
+                batch_size = image.shape[0]
+                for i in range(batch_size):
+                    single_image = image[i]
+                    pil_image = to_pil(single_image)
+                    image_bytes = io.BytesIO()
+                    pil_image.save(image_bytes, format="JPEG")
+                    image_bytes.seek(0)
+                    image_base64 = base64.b64encode(image_bytes.getvalue()).decode(
+                        "utf-8"
+                    )
+                    user_parts.append(
+                        {"inlineData": {"mimeType": "image/jpeg", "data": image_base64}}
+                    )
+            else:
+                # Single image
+                pil_image = to_pil(image)
+                image_bytes = io.BytesIO()
+                pil_image.save(image_bytes, format="JPEG")
+                image_bytes.seek(0)
+                image_base64 = base64.b64encode(image_bytes.getvalue()).decode("utf-8")
+                user_parts.append(
+                    {"inlineData": {"mimeType": "image/jpeg", "data": image_base64}}
+                )
 
         image_config = {
             "imageSize": image_size,
