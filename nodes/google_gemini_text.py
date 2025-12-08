@@ -46,8 +46,8 @@ class MaiGoogleGeminiText(PromptSaverMixin):
             },
         }
 
-    RETURN_TYPES = ("STRING",)
-    RETURN_NAMES = ("text",)
+    RETURN_TYPES = ("STRING", "STRING")
+    RETURN_NAMES = ("text", "model")
     FUNCTION = "call_gemini"
     CATEGORY = "mAI"
 
@@ -103,12 +103,13 @@ class MaiGoogleGeminiText(PromptSaverMixin):
             response.raise_for_status()
             data = response.json()
             llm_text = data.get("data", "")
+            model_name = data.get("model", "")
 
             if not llm_text.strip():
                 raise ValueError("[ERROR] The LLM returned an empty response.")
 
             self.save_content(llm_text, "MaiGoogleGeminiText-text")
-            return (llm_text,)
+            return (llm_text, model_name)
         except requests.exceptions.RequestException as e:
             error_message = f"[REQUEST ERROR] {e}"
 
