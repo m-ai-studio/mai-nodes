@@ -69,7 +69,7 @@ class MaiLLMReasoning(PromptSaverMixin):
         }
 
         try:
-            response = requests.post(url, headers=headers, json=payload, timeout=30)
+            response = requests.post(url, headers=headers, json=payload, timeout=180)
             response.raise_for_status()
             data = response.json()
             llm_text = data.get("data", "")

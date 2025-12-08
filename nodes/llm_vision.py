@@ -85,7 +85,7 @@ class MaiLLMVision(PromptSaverMixin):
 
         try:
             response = requests.post(
-                url, headers=headers, data=data, files=files, timeout=30
+                url, headers=headers, data=data, files=files, timeout=180
             )
             response.raise_for_status()
             result_json = response.json()
