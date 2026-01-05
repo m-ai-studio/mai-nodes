@@ -16,6 +16,7 @@ class MaiGoogleGeminiText(PromptSaverMixin):
             "required": {
                 "url": ("STRING", {"default": "", "multiline": False}),
                 "api_key": ("STRING", {"default": "", "multiline": False}),
+                "model": ("STRING", {"default": "gemini-3-pro-preview", "multiline": False}),
                 "system_prompt": ("STRING", {"default": "", "multiline": True}),
                 "user_prompt": ("STRING", {"default": "", "multiline": True}),
                 "temperature": (
@@ -55,6 +56,7 @@ class MaiGoogleGeminiText(PromptSaverMixin):
         self,
         url,
         api_key,
+        model,
         system_prompt,
         user_prompt,
         temperature,
@@ -81,7 +83,7 @@ class MaiGoogleGeminiText(PromptSaverMixin):
             )
 
         payload = {
-            "model": "gemini-3-pro-preview",
+            "model": model,
             "config": {
                 "temperature": temperature,
                 "topP": top_p,
