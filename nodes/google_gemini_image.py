@@ -18,6 +18,10 @@ class MaiGoogleGeminiImage(PromptSaverMixin):
         return {
             "required": {
                 "url": ("STRING", {"default": "", "multiline": False}),
+                "model_name": (
+                    "STRING",
+                    {"default": "gemini-3-pro-image-preview", "multiline": False},
+                ),
                 "api_key": ("STRING", {"default": "", "multiline": False}),
                 "system_prompt": ("STRING", {"default": "", "multiline": True}),
                 "user_prompt": ("STRING", {"default": "", "multiline": True}),
@@ -72,6 +76,7 @@ class MaiGoogleGeminiImage(PromptSaverMixin):
     def call_gemini(
         self,
         url,
+        model_name,
         api_key,
         system_prompt,
         user_prompt,
@@ -84,6 +89,9 @@ class MaiGoogleGeminiImage(PromptSaverMixin):
     ):
         if not url.strip():
             raise ValueError("[ERROR] No URL provided.")
+
+        if not model_name.strip():
+            raise ValueError("[ERROR] No Model Name provided.")
 
         headers = {"Content-Type": "application/json", "x-api-key": api_key.strip()}
 
@@ -123,7 +131,7 @@ class MaiGoogleGeminiImage(PromptSaverMixin):
             image_config["aspectRatio"] = aspect_ratio
 
         payload = {
-            "model": "gemini-3-pro-image-preview",
+            "model": model_name.strip(),
             "config": {
                 "temperature": temperature,
                 "topP": top_p,
